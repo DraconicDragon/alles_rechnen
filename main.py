@@ -1,64 +1,86 @@
-#Primzahlen, vollkommene Zahlen und befreundete Zahlen berechnen
-#jeweils unter Verwendung der selbst definierten Funktion t_summe(a)
-# 1. Teil
-def t_summe(zahl):
-    teilers = 0
-    i=1
-    while i<=zahl // 2:
-        if zahl % i == 0:
-            teilers=teilers+i
-        i=i+1
-    return(teilers)
-# 2.Teil
-print("Das Programm sucht wahlweise Primzahlen, vollkommenen Zahlen oder befreundete Zahlen")
-print("in einem vom Benutzer zu wählenden Bereich")
-print("Der Benutzer kann einen Anfangs- und einen Endwert angeben. Falls kein Anfangswert")
-print("angegeben wird, startet das Programm automatisch bei 1")
-print()
-print("Wenn Sie Primzahlen bestimmen wollen, geben Sie eine 1 ein!")
-print("Für vollkommene Zahlen bitte eine 2")
-print("Für befreundete Zahlen eine 3")
-print("Für alles bitte eine 0")
-print()
-# 3. Teil
-wahl=int(input())
-u_gr = input('Geben Sie ein, ab welcher Zahl gesucht werden soll: ')
-o_gr = int(input('Geben Sie ein, bis zu welcher Zahl gesucht werden soll: '))
-if u_gr=="":
-    zaehler=1
-else:
-    zaehler=int(u_gr)
-    hilfszaehler=zaehler
+# Funktionsdefinition
+def teilersumme(zahl):
+    ts_func = 0
+    teiler = 1
+    while teiler <= zahl / 2:
 
-# 4. Teil
-if wahl==1 or wahl ==0:
-    while zaehler<=o_gr:
-        p_test=t_summe(zaehler)
-        if p_test==1:
-            print(zaehler," ist eine Primzahl")
-        zaehler=zaehler+1
-    zaehler=hilfszaehler
+        if zahl % teiler == 0:
+            ts_func = ts_func + teiler
 
-# 5. Teil
-if wahl==2 or wahl==0:
-    while zaehler<=o_gr:
-        ts=t_summe(zaehler)
-        if ts==zaehler:
-            print(zaehler," ist eine vollkommene Zahl")
-        zaehler=zaehler+1
-    zaehler=hilfszaehler
+        teiler += 1
+    return ts_func
 
-# 6. Teil
-if wahl==3 or wahl ==0:
-    gefunden=False
-    while zaehler<=o_gr:
-        a = t_summe(zaehler)
-        b =t_summe(a)
-        if zaehler==b and zaehler!=a:
-            print(zaehler,' und ',a,' sind befreundete Zahlen')
-            gefunden=True
-        zaehler=zaehler+1
-    if gefunden == False:
-        print ('Es gibt keine befreundeten Zahlen in diesem Bereich')
+# Benutzeranweisung
+print("Das Programm sucht Primzahlen, vollkommene Zahlen und/oder befreundete Zahlen nach Wahl\n")
+print("Bitte geben Sie zur Auswahl eine Zahl ein: \n",
+          "1 für Primzahlen\n",
+          "2 für volkommende Zahlen\n",
+          "3 für befreundete Zahlen\n",
+          "0 für alle Zahlen\n")
+
+# Zuweisung der Eingaben zu Variablen
+auswahl = int(input("Ihre Wahl: "))
+untere_gr = int(input("Welche Zahl soll die untere Grenze werden? "))
+obere_gr = int(input("Welche Zahl soll die obere Grenze werden? "))
+
+ausgabenzaehler = 0
 
 
+# Primzahlenprüfer
+if auswahl == 0 or auswahl == 1:
+    ts = 0
+    print("")
+
+    while untere_gr <= obere_gr:
+        if teilersumme(untere_gr) == 1:
+            if untere_gr == 1: # 1 ist keine Primzahl
+                print("")
+            else:
+                print(untere_gr, end = ", ")
+                ausgabenzaehler += 1
+
+        untere_gr += 1
+
+    if ausgabenzaehler > 0:
+        print("\nPrimzahlen im angegebenen Bereich wurden ausgegeben.")
+    else:
+        print("Keine Primzahlen im angegebenen Bereich gefunden. (1 ist keine Primzahl!)")
+
+print("")
+
+# vollkommene Zahlenprüfer
+if auswahl == 0 or auswahl == 2:
+
+    while untere_gr <= obere_gr:
+        ts = teilersumme(untere_gr)
+
+        if ts == untere_gr:
+            print(untere_gr, end = ", ")
+            ausgabenzaehler += 1
+
+        untere_gr += 1
+
+    if ausgabenzaehler > 0:
+        print("\nVollkommene zahlen wurden ausgegeben.")
+    else:
+        print("Keine vollkommenen Zahlen im Bereich gefunden.")
+
+print("")
+
+# Befreundete Zahlenprüfer
+if auswahl == 0 or auswahl == 3:
+
+    while untere_gr <= obere_gr:
+        a = teilersumme(untere_gr)
+        b = teilersumme(a)
+
+        if untere_gr == b and untere_gr != a:
+            print(untere_gr, "und", a, end = ",\n")
+            ausgabenzaehler += 1
+
+        untere_gr += 1
+
+    if ausgabenzaehler > 0:
+        print("\nBefreundete zahlen wurden ausgegeben.")
+    else:
+        print("Keine befreundete Zahlen im Bereich gefunden.")
